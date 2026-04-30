@@ -1,0 +1,79 @@
+:root {
+  --color-page: #0b0b10;
+  --color-window: #15151d;
+  --color-panel: #222128;
+  --color-card: #1e1d24;
+  --color-card-hover: #282631;
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-border-strong: rgba(255, 255, 255, 0.22);
+  --color-text-primary: #f7f2f4;
+  --color-text-secondary: #c9c2cb;
+  --color-text-muted: #8e8793;
+  --color-inverse: #111018;
+  --color-coral: #ff5e5b;
+  --color-magenta: #f24dce;
+  --gradient-page-glow: radial-gradient(circle at 6% 8%, rgba(255, 94, 91, 0.52) 0%, rgba(242, 77, 206, 0.42) 24%, rgba(11, 11, 16, 0) 50%);
+  --gradient-hero-frame: linear-gradient(135deg, rgba(45, 190, 244, 0.95) 0%, rgba(62, 135, 255, 0.72) 36%, rgba(21, 21, 29, 0.96) 100%);
+  --gradient-button-accent: linear-gradient(135deg, #ff5e5b 0%, #f24dce 100%);
+  --font-heading: 'Satoshi', 'Avenir Next', system-ui, sans-serif;
+  --font-body: 'Satoshi', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  --radius-sm: 0.625rem;
+  --radius-card: 0.625rem;
+  --radius-panel: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-pill: 999px;
+  --shadow-window: 0 2rem 5rem rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  --shadow-panel: 0 1.5rem 4rem rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 1rem 2rem rgba(0, 0, 0, 0.34);
+  --shadow-card-hover: 0 1.25rem 3rem rgba(0, 0, 0, 0.44), 0 0 2rem rgba(255, 94, 91, 0.14);
+  --shadow-accent-glow: 0 0 1.25rem rgba(255, 94, 91, 0.5), 0 0 2.75rem rgba(242, 77, 206, 0.28);
+  --shadow-focus: 0 0 0 3px rgba(255, 94, 91, 0.45), 0 0 0 6px rgba(242, 77, 206, 0.18);
+  --blur-glass: 20px;
+  --motion-base: 220ms;
+  --motion-slow: 420ms;
+  --motion-entrance: 700ms;
+  --motion-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+
+  font: 18px/145% var(--font-body);
+  color-scheme: dark;
+  color: var(--color-text-secondary);
+  background: var(--color-page);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-page);
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+svg {
+  display: block;
+}
+
+@media (max-width: 56rem) {
+  :root {
+    font-size: 16px;
+  }
+}
