@@ -225,20 +225,22 @@ const socialLinks: SocialLink[] = [
 
 const projects: Project[] = [
   {
-    title: 'Studio Ledger',
-    summary: 'A finance dashboard for tracking recurring creative work.',
-    stack: 'React / TypeScript / Supabase',
-    liveUrl: 'https://antonio-matlala.dev/studio-ledger',
-    repoUrl: 'https://github.com/AntonioMatlala/studio-ledger',
+    title: 'Ster Stumpie · After Dark',
+    summary:
+      'My mockup marketing site for an alcoholic take on Steri Stumpie — single-page, night-mode brand play.',
+    stack: 'React / Tailwind / Create React App',
+    liveUrl: 'https://ster-stumpie.netlify.app/',
+    repoUrl: 'https://github.com/camatlala/ster-stumpie',
     tone: 'warm',
     size: 'feature',
   },
   {
-    title: 'Signal Desk',
-    summary: 'Realtime task triage with compact status surfaces.',
-    stack: 'Vite / Firebase',
-    liveUrl: 'https://antonio-matlala.dev/signal-desk',
-    repoUrl: 'https://github.com/AntonioMatlala/signal-desk',
+    title: 'ChatReplay',
+    summary:
+      'Read exported WhatsApp chats in a familiar scrollable UI — files stay on your device, no server or sign-in.',
+    stack: 'React / TypeScript / Vite / Tailwind',
+    liveUrl: 'https://mychatreplay.netlify.app/',
+    repoUrl: 'https://github.com/camatlala/chatreplay',
     tone: 'code',
     size: 'tall',
   },
