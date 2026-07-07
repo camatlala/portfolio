@@ -1,4 +1,7 @@
 import './App.css'
+import LiquidEther from './components/LiquidEther'
+import HeroModel from './components/HeroModel'
+import { useScrollReveal } from './hooks/useScrollReveal'
 import {
   createContext,
   useContext,
@@ -254,11 +257,12 @@ const projects: Project[] = [
     size: 'standard',
   },
   {
-    title: 'Kasi Maps',
-    summary: 'Neighborhood discovery experience with curated routes.',
-    stack: 'Maps API / CSS Motion',
-    liveUrl: 'https://antonio-matlala.dev/kasi-maps',
-    repoUrl: 'https://github.com/AntonioMatlala/kasi-maps',
+    title: 'Calc-It',
+    summary:
+      'Three-tier calculator (Basic/Scientific/Expert) with symbolic algebra, graphing, and a shader-driven glass UI.',
+    stack: 'React 19 / TypeScript / Vite / Tailwind v4 / Three.js',
+    liveUrl: 'https://antonio-calc-it.netlify.app/',
+    repoUrl: 'https://github.com/camatlala/calc-it',
     tone: 'cyan',
     size: 'wide',
   },
@@ -313,68 +317,191 @@ function Icon({ name }: { name: IconName }) {
   )
 }
 
+function ScrollHint() {
+  return (
+    <div className="scroll-hint" aria-hidden="true">
+      <span>Scroll</span>
+      <span className="scroll-hint-line" />
+    </div>
+  )
+}
+
+function useScrollProgress(reducedMotion: boolean) {
+  const progressRef = useRef(0)
+
+  useEffect(() => {
+    if (reducedMotion) return
+
+    let frame: number | null = null
+
+    const measure = () => {
+      frame = null
+      const doc = document.documentElement
+      const max = doc.scrollHeight - doc.clientHeight
+      progressRef.current = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0
+    }
+
+    const onScroll = () => {
+      if (frame !== null) return
+      frame = requestAnimationFrame(measure)
+    }
+
+    measure()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (frame !== null) cancelAnimationFrame(frame)
+    }
+  }, [reducedMotion])
+
+  return progressRef
+}
+
+function HeroIntroSection() {
+  const reducedMotion = usePrefersReducedMotion()
+  const { ref, visible } = useScrollReveal<HTMLElement>(reducedMotion)
+
+  return (
+    <section
+      ref={ref}
+      className="hero-intro-zone reveal"
+      data-visible={visible}
+      aria-labelledby="intro-title"
+    >
+      <div className="identity-card">
+        <p className="eyebrow">AI automation &amp; full-stack delivery</p>
+        <h1 id="intro-title">
+          Antonio Matlala
+          <span>AI Solutions Engineer</span>
+        </h1>
+        <p className="tagline">
+          I ship React and React Native applications, AI-assisted
+          engineering workflows, and practical automations that improve
+          delivery pipelines and measurable business outcomes.
+        </p>
+        <p className="stack-line">
+          React / TypeScript / React Native / Azure DevOps / AI Dev Tooling
+        </p>
+
+        <nav className="social-list" aria-label="Social links">
+          {socialLinks.map((link) => (
+            <a
+              className="social-link"
+              href={link.href}
+              key={link.label}
+              target={link.href.startsWith('mailto:') ? undefined : '_blank'}
+              rel={link.href.startsWith('mailto:') ? undefined : 'noreferrer'}
+              aria-label={`Open Antonio Matlala on ${link.label}`}
+            >
+              <Icon name={link.icon} />
+              <span>{link.label}</span>
+            </a>
+          ))}
+        </nav>
+      </div>
+    </section>
+  )
+}
+
+function ProjectsSection() {
+  const reducedMotion = usePrefersReducedMotion()
+  const { ref, visible } = useScrollReveal<HTMLElement>(reducedMotion)
+
+  return (
+    <section
+      ref={ref}
+      className="project-zone reveal"
+      data-visible={visible}
+      aria-labelledby="projects-title"
+    >
+      <div className="project-heading">
+        <p className="eyebrow">Proof of work</p>
+        <h2 id="projects-title">Selected projects</h2>
+      </div>
+
+      <div className="project-grid">
+        {projects.map((project, index) => (
+          <ProjectCard project={project} index={index} key={project.title} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function AboutSection() {
+  const reducedMotion = usePrefersReducedMotion()
+  const { ref, visible } = useScrollReveal<HTMLElement>(reducedMotion)
+
+  return (
+    <section
+      ref={ref}
+      className="about-zone reveal"
+      data-visible={visible}
+      aria-labelledby="about-title"
+    >
+      <p className="eyebrow">Let's build something</p>
+      <h2 id="about-title">Get in touch</h2>
+      <p className="about-copy">
+        Based in South Africa, working with teams anywhere. If you need a
+        product shipped, a workflow automated, or an AI feature that
+        actually holds up in production — reach out.
+      </p>
+      <nav className="social-list social-list-inline" aria-label="Social links">
+        {socialLinks.map((link) => (
+          <a
+            className="social-link"
+            href={link.href}
+            key={link.label}
+            target={link.href.startsWith('mailto:') ? undefined : '_blank'}
+            rel={link.href.startsWith('mailto:') ? undefined : 'noreferrer'}
+            aria-label={`Open Antonio Matlala on ${link.label}`}
+          >
+            <Icon name={link.icon} />
+            <span>{link.label}</span>
+          </a>
+        ))}
+      </nav>
+      <p className="footer-note">© {new Date().getFullYear()} Antonio Matlala</p>
+    </section>
+  )
+}
+
 function App() {
+  const reducedMotion = usePrefersReducedMotion()
+  const scrollProgress = useScrollProgress(reducedMotion)
+
   return (
     <PointerTiltProvider>
-    <main className="portfolio-page" aria-label="Antonio Matlala portfolio">
-      <section className="portfolio-shell" aria-label="Portfolio showcase">
-        <div className="portfolio-split">
-          <aside className="identity-zone" aria-labelledby="intro-title">
-            <div className="identity-card">
-              <p className="eyebrow">Building digital products</p>
-              <h1 id="intro-title">
-                Antonio Matlala
-                <span>Frontend Developer</span>
-              </h1>
-              <p className="tagline">
-                I shape fast React interfaces, design systems, and practical
-                product tools with a cinematic edge.
-              </p>
-              <p className="stack-line">
-                React / TypeScript / Firebase / Supabase / CSS Motion
-              </p>
+      <div className="liquid-ether-backdrop" aria-hidden="true">
+        <LiquidEther
+          colors={['#2dbef4', '#3e87ff', '#ff5a5f']}
+          mouseForce={18}
+          cursorSize={110}
+          resolution={0.5}
+          autoDemo
+          autoSpeed={0.4}
+          autoIntensity={2}
+          autoResumeDelay={2500}
+          autoRampDuration={0.8}
+        />
+      </div>
 
-              <nav className="social-list" aria-label="Social links">
-                {socialLinks.map((link) => (
-                  <a
-                    className="social-link"
-                    href={link.href}
-                    key={link.label}
-                    target={link.href.startsWith('mailto:') ? undefined : '_blank'}
-                    rel={
-                      link.href.startsWith('mailto:')
-                        ? undefined
-                        : 'noreferrer'
-                    }
-                    aria-label={`Open Antonio Matlala on ${link.label}`}
-                  >
-                    <Icon name={link.icon} />
-                    <span>{link.label}</span>
-                  </a>
-                ))}
-              </nav>
-            </div>
-          </aside>
+      <main className="portfolio-page" aria-label="Antonio Matlala — AI solutions portfolio">
+        <section className="hero-name-zone" aria-hidden="true">
+          <div className="hero-model">
+            <HeroModel scrollProgress={scrollProgress} reducedMotion={reducedMotion} />
+          </div>
+          <ScrollHint />
+        </section>
 
-          <section className="project-zone" aria-labelledby="projects-title">
-            <div className="project-heading">
-              <p className="eyebrow">Selected work</p>
-              <h2 id="projects-title">Project grid</h2>
-            </div>
+        <HeroIntroSection />
 
-            <div className="project-grid">
-              {projects.map((project, index) => (
-                <ProjectCard
-                  project={project}
-                  index={index}
-                  key={project.title}
-                />
-              ))}
-            </div>
-          </section>
-        </div>
-      </section>
-    </main>
+        <ProjectsSection />
+        <AboutSection />
+      </main>
     </PointerTiltProvider>
   )
 }
