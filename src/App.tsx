@@ -70,8 +70,8 @@ function ProjectCard({
       </div>
 
       <div className="project-copy">
-        <p>{project.stack}</p>
         <h3>{project.title}</h3>
+        <p>{project.stack}</p>
         <span>{project.summary}</span>
       </div>
 
