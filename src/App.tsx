@@ -1,6 +1,5 @@
 import './App.css'
 import LiquidEther from './components/LiquidEther'
-import HeroModel from './components/HeroModel'
 import { useScrollReveal } from './hooks/useScrollReveal'
 import {
   createContext,
@@ -26,7 +25,7 @@ type Project = {
   summary: string
   stack: string
   liveUrl: string
-  repoUrl: string
+  repoUrl?: string
   tone: 'warm' | 'code' | 'violet' | 'cyan' | 'peach'
   size: 'wide' | 'tall' | 'feature' | 'standard'
 }
@@ -193,16 +192,18 @@ function ProjectCard({
         >
           <Icon name="arrow" />
         </a>
-        <a
-          className="icon-button"
-          href={project.repoUrl}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`Open source repository for ${project.title}`}
-          title="Source code"
-        >
-          <Icon name="github" />
-        </a>
+        {project.repoUrl ? (
+          <a
+            className="icon-button"
+            href={project.repoUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Open source repository for ${project.title}`}
+            title="Source code"
+          >
+            <Icon name="github" />
+          </a>
+        ) : null}
       </div>
     </article>
   )
@@ -267,12 +268,62 @@ const projects: Project[] = [
     size: 'wide',
   },
   {
-    title: 'Pulse Forms',
-    summary: 'Accessible form flows with clear validation states.',
-    stack: 'TypeScript / Zod',
-    liveUrl: 'https://antonio-matlala.dev/pulse-forms',
-    repoUrl: 'https://github.com/AntonioMatlala/pulse-forms',
+    title: 'Worth It',
+    summary:
+      'Tell WorthIt what you’re deciding, and it’ll ask what it needs to know.',
+    stack: 'Azure DevOps',
+    liveUrl: 'https://worthit-decisions.netlify.app/',
     tone: 'peach',
+    size: 'standard',
+  },
+  {
+    title: 'Patchwork',
+    summary:
+      'Self-hosted AI coding harness — agent inspects, edits, and tests code in an isolated Docker sandbox with token-optimized context.',
+    stack: 'FastAPI / React / Docker / SQLite',
+    liveUrl: 'https://github.com/camatlala/patchwork',
+    repoUrl: 'https://github.com/camatlala/patchwork',
+    tone: 'code',
+    size: 'wide',
+  },
+  {
+    title: 'Page State',
+    summary:
+      'Browser agent harness — controls websites via a pruned, diffed accessibility tree with ref-based actions and on-demand screenshots.',
+    stack: 'FastAPI / Playwright / React / Docker',
+    liveUrl: 'https://github.com/camatlala/page-state',
+    repoUrl: 'https://github.com/camatlala/page-state',
+    tone: 'cyan',
+    size: 'standard',
+  },
+  {
+    title: 'Context Bench',
+    summary:
+      'RAG evaluation harness — runs LangSmith datasets against your own retrieval endpoint and scores results with an LLM judge.',
+    stack: 'FastAPI / React / SQLite',
+    liveUrl: 'https://github.com/camatlala/context-bench',
+    repoUrl: 'https://github.com/camatlala/context-bench',
+    tone: 'violet',
+    size: 'standard',
+  },
+  {
+    title: 'Agent Bench',
+    summary:
+      'LLM agent evaluation harness — runs concurrent scenario tests against your agent endpoint with shared-context judging.',
+    stack: 'FastAPI / asyncio / React',
+    liveUrl: 'https://github.com/camatlala/agent-bench',
+    repoUrl: 'https://github.com/camatlala/agent-bench',
+    tone: 'peach',
+    size: 'tall',
+  },
+  {
+    title: 'Runbook',
+    summary:
+      'AI agent CLI harness — checkpoint/resume long coding sessions with semantic memory and hard token-budget enforcement.',
+    stack: 'Python / Typer / Docker / SQLite',
+    liveUrl: 'https://github.com/camatlala/runbook',
+    repoUrl: 'https://github.com/camatlala/runbook',
+    tone: 'warm',
     size: 'standard',
   },
 ]
@@ -315,49 +366,6 @@ function Icon({ name }: { name: IconName }) {
       <path d="M14 4h6v6h-2V7.41l-7.3 7.3-1.4-1.42 7.29-7.29H14V4ZM5 6h6v2H7v9h9v-4h2v6H5V6Z" />
     </svg>
   )
-}
-
-function ScrollHint() {
-  return (
-    <div className="scroll-hint" aria-hidden="true">
-      <span>Scroll</span>
-      <span className="scroll-hint-line" />
-    </div>
-  )
-}
-
-function useScrollProgress(reducedMotion: boolean) {
-  const progressRef = useRef(0)
-
-  useEffect(() => {
-    if (reducedMotion) return
-
-    let frame: number | null = null
-
-    const measure = () => {
-      frame = null
-      const doc = document.documentElement
-      const max = doc.scrollHeight - doc.clientHeight
-      progressRef.current = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0
-    }
-
-    const onScroll = () => {
-      if (frame !== null) return
-      frame = requestAnimationFrame(measure)
-    }
-
-    measure()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-      if (frame !== null) cancelAnimationFrame(frame)
-    }
-  }, [reducedMotion])
-
-  return progressRef
 }
 
 function HeroIntroSection() {
@@ -470,9 +478,6 @@ function AboutSection() {
 }
 
 function App() {
-  const reducedMotion = usePrefersReducedMotion()
-  const scrollProgress = useScrollProgress(reducedMotion)
-
   return (
     <PointerTiltProvider>
       <div className="liquid-ether-backdrop" aria-hidden="true">
@@ -490,13 +495,6 @@ function App() {
       </div>
 
       <main className="portfolio-page" aria-label="Antonio Matlala — AI solutions portfolio">
-        <section className="hero-name-zone" aria-hidden="true">
-          <div className="hero-model">
-            <HeroModel scrollProgress={scrollProgress} reducedMotion={reducedMotion} />
-          </div>
-          <ScrollHint />
-        </section>
-
         <HeroIntroSection />
 
         <ProjectsSection />
