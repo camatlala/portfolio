@@ -1,5 +1,6 @@
 import './App.css'
 import LiquidEther from './components/LiquidEther'
+import Masonry, { type MasonryItem } from './components/Masonry'
 import { useScrollReveal } from './hooks/useScrollReveal'
 import { useEffect, useState, type CSSProperties } from 'react'
 
@@ -47,7 +48,6 @@ function ProjectCard({
   return (
     <article
       className="project-card"
-      data-size={project.size}
       data-tone={project.tone}
       style={{ '--card-index': index } as CSSProperties}
     >
@@ -296,9 +296,22 @@ function HeroIntroSection() {
   )
 }
 
+const PROJECT_CARD_HEIGHT: Record<Project['size'], number> = {
+  feature: 460,
+  tall: 440,
+  wide: 300,
+  standard: 340,
+}
+
 function ProjectsSection() {
   const reducedMotion = usePrefersReducedMotion()
   const { ref, visible } = useScrollReveal<HTMLElement>(reducedMotion)
+
+  const masonryItems: MasonryItem[] = projects.map((project, index) => ({
+    id: project.title,
+    height: PROJECT_CARD_HEIGHT[project.size],
+    content: <ProjectCard project={project} index={index} />,
+  }))
 
   return (
     <section
@@ -312,11 +325,16 @@ function ProjectsSection() {
         <h2 id="projects-title">Selected projects</h2>
       </div>
 
-      <div className="project-grid">
-        {projects.map((project, index) => (
-          <ProjectCard project={project} index={index} key={project.title} />
-        ))}
-      </div>
+      <Masonry
+        items={masonryItems}
+        ease="power3.out"
+        duration={0.6}
+        stagger={0.05}
+        animateFrom="bottom"
+        scaleOnHover
+        hoverScale={0.97}
+        blurToFocus
+      />
     </section>
   )
 }
