@@ -1,16 +1,7 @@
 import './App.css'
 import LiquidEther from './components/LiquidEther'
 import { useScrollReveal } from './hooks/useScrollReveal'
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type ReactNode,
-} from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 
 type IconName = 'arrow' | 'github' | 'linkedin' | 'x' | 'mail'
 
@@ -28,72 +19,6 @@ type Project = {
   repoUrl?: string
   tone: 'warm' | 'code' | 'violet' | 'cyan' | 'peach'
   size: 'wide' | 'tall' | 'feature' | 'standard'
-}
-
-const CARD_TILT_MAX_DEG = 11
-
-type PointerPos = { x: number; y: number }
-
-const PointerTiltContext = createContext<PointerPos | null>(null)
-
-function PointerTiltProvider({ children }: { children: ReactNode }) {
-  const [pos, setPos] = useState<PointerPos | null>(null)
-  const reducedMotion = usePrefersReducedMotion()
-  const frameRef = useRef<number | null>(null)
-  const pendingRef = useRef<PointerPos | null>(null)
-
-  useEffect(() => {
-    if (reducedMotion) {
-      return
-    }
-
-    const flush = () => {
-      frameRef.current = null
-      const next = pendingRef.current
-      if (!next) return
-      setPos((prev) =>
-        prev && prev.x === next.x && prev.y === next.y ? prev : next,
-      )
-    }
-
-    const onPointerMove = (e: PointerEvent) => {
-      pendingRef.current = { x: e.clientX, y: e.clientY }
-      if (frameRef.current !== null) return
-      frameRef.current = requestAnimationFrame(flush)
-    }
-
-    const onPointerLeaveWindow = () => {
-      if (frameRef.current !== null) {
-        cancelAnimationFrame(frameRef.current)
-        frameRef.current = null
-      }
-      pendingRef.current = null
-      setPos(null)
-    }
-
-    window.addEventListener('pointermove', onPointerMove, { passive: true })
-    document.documentElement.addEventListener(
-      'mouseleave',
-      onPointerLeaveWindow,
-    )
-
-    return () => {
-      window.removeEventListener('pointermove', onPointerMove)
-      document.documentElement.removeEventListener(
-        'mouseleave',
-        onPointerLeaveWindow,
-      )
-      if (frameRef.current !== null) {
-        cancelAnimationFrame(frameRef.current)
-      }
-    }
-  }, [reducedMotion])
-
-  return (
-    <PointerTiltContext.Provider value={reducedMotion ? null : pos}>
-      {children}
-    </PointerTiltContext.Provider>
-  )
 }
 
 function usePrefersReducedMotion(): boolean {
@@ -119,55 +44,12 @@ function ProjectCard({
   project: Project
   index: number
 }) {
-  const pointer = useContext(PointerTiltContext)
-  const cardRef = useRef<HTMLElement>(null)
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0 })
-
-  useLayoutEffect(() => {
-    const el = cardRef.current
-    if (!el || !pointer) {
-      setTilt((prev) =>
-        prev.rx === 0 && prev.ry === 0 ? prev : { rx: 0, ry: 0 },
-      )
-      return
-    }
-
-    const rect = el.getBoundingClientRect()
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    const halfW = Math.max(rect.width / 2, 1)
-    const halfH = Math.max(rect.height / 2, 1)
-    const nx = (pointer.x - cx) / halfW
-    const ny = (pointer.y - cy) / halfH
-    const clamp = (v: number) => Math.max(-1, Math.min(1, v))
-    const ry = clamp(nx) * CARD_TILT_MAX_DEG
-    const rx = clamp(-ny) * CARD_TILT_MAX_DEG
-
-    setTilt((prev) =>
-      prev.rx === rx && prev.ry === ry ? prev : { rx, ry },
-    )
-  }, [pointer])
-
-  const tiltStyle =
-    pointer === null
-      ? {}
-      : ({
-          '--tilt-rx': `${tilt.rx}deg`,
-          '--tilt-ry': `${tilt.ry}deg`,
-        } as CSSProperties)
-
   return (
     <article
-      ref={cardRef}
       className="project-card"
       data-size={project.size}
       data-tone={project.tone}
-      style={
-        {
-          '--card-index': index,
-          ...tiltStyle,
-        } as CSSProperties
-      }
+      style={{ '--card-index': index } as CSSProperties}
     >
       <div className="project-preview" aria-hidden="true">
         <span className="preview-orb" />
@@ -324,7 +206,7 @@ const projects: Project[] = [
     liveUrl: 'https://github.com/camatlala/runbook',
     repoUrl: 'https://github.com/camatlala/runbook',
     tone: 'warm',
-    size: 'standard',
+    size: 'wide',
   },
 ]
 
@@ -479,7 +361,7 @@ function AboutSection() {
 
 function App() {
   return (
-    <PointerTiltProvider>
+    <>
       <div className="liquid-ether-backdrop" aria-hidden="true">
         <LiquidEther
           colors={['#2dbef4', '#3e87ff', '#ff5a5f']}
@@ -500,7 +382,7 @@ function App() {
         <ProjectsSection />
         <AboutSection />
       </main>
-    </PointerTiltProvider>
+    </>
   )
 }
 

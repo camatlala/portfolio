@@ -228,8 +228,6 @@ body {
 .project-card {
   --card-index: 0;
   --lift: 0rem;
-  --tilt-rx: 0deg;
-  --tilt-ry: 0deg;
 
   position: relative;
   isolation: isolate;
@@ -245,9 +243,7 @@ body {
   color: var(--color-text-primary);
   background: var(--color-card);
   box-shadow: var(--shadow-card);
-  transform: perspective(920px) rotateX(var(--tilt-rx)) rotateY(var(--tilt-ry))
-    translateY(var(--lift)) translateZ(0);
-  transform-style: preserve-3d;
+  transform: translateY(var(--lift)) translateZ(0);
   will-change: transform;
   transition:
     border-color var(--motion-base) var(--motion-standard),
@@ -286,7 +282,7 @@ body {
 }
 
 .project-card[data-size='wide'] {
-  grid-column: span 3;
+  grid-column: span 4;
   grid-row: span 1;
 }
 
@@ -603,10 +599,7 @@ body {
   }
 
   .project-card {
-    --tilt-rx: 0deg !important;
-    --tilt-ry: 0deg !important;
-    transform: perspective(920px) rotateX(0deg) rotateY(0deg) translateY(var(--lift))
-      translateZ(0) !important;
+    transform: translateY(var(--lift)) translateZ(0) !important;
   }
 
   .social-link,
