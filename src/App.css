@@ -20,11 +20,17 @@ body {
 .hero-intro-zone {
   position: relative;
   width: 100%;
-  min-height: 100vh;
   min-height: 100dvh;
   display: grid;
   place-items: center;
-  padding: clamp(2rem, 6vh, 4rem) 1rem;
+  padding: clamp(1.5rem, 6vh, 4rem) 1rem;
+}
+
+@media (max-height: 40rem) {
+  .hero-intro-zone {
+    min-height: 0;
+    padding-block: 3rem;
+  }
 }
 
 .identity-card {
