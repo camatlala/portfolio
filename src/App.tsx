@@ -18,7 +18,7 @@ type Project = {
   stack: string
   liveUrl: string
   repoUrl?: string
-  tone: 'warm' | 'code' | 'violet' | 'cyan' | 'peach'
+  tone: 'warm' | 'code' | 'violet' | 'cyan' | 'peach' | 'ster' | 'mono' | 'calc' | 'worthit'
   /** Card height in px — tuned per project so masonry columns balance. */
   height: number
   /** Optional preview image (e.g. a screenshot); falls back to a tone gradient. */
@@ -129,7 +129,7 @@ const projects: Project[] = [
     stack: 'React / Tailwind / Create React App',
     liveUrl: 'https://ster-stumpie.netlify.app/',
     repoUrl: 'https://github.com/camatlala/ster-stumpie',
-    tone: 'warm',
+    tone: 'ster',
     height: 380,
   },
   {
@@ -139,17 +139,8 @@ const projects: Project[] = [
     stack: 'React / TypeScript / Vite / Tailwind',
     liveUrl: 'https://mychatreplay.netlify.app/',
     repoUrl: 'https://github.com/camatlala/chatreplay',
-    tone: 'code',
+    tone: 'mono',
     height: 360,
-  },
-  {
-    title: 'Orbit Notes',
-    summary: 'Fast notes with keyboard-first capture and search.',
-    stack: 'React / Local-first',
-    liveUrl: 'https://antonio-matlala.dev/orbit-notes',
-    repoUrl: 'https://github.com/AntonioMatlala/orbit-notes',
-    tone: 'violet',
-    height: 280,
   },
   {
     title: 'Calc-It',
@@ -158,7 +149,7 @@ const projects: Project[] = [
     stack: 'React 19 / TypeScript / Vite / Tailwind v4 / Three.js',
     liveUrl: 'https://antonio-calc-it.netlify.app/',
     repoUrl: 'https://github.com/camatlala/calc-it',
-    tone: 'cyan',
+    tone: 'calc',
     height: 400,
   },
   {
@@ -167,7 +158,7 @@ const projects: Project[] = [
       'Tell WorthIt what you’re deciding, and it’ll ask what it needs to know.',
     stack: 'Azure DevOps',
     liveUrl: 'https://worthit-decisions.netlify.app/',
-    tone: 'peach',
+    tone: 'worthit',
     height: 300,
   },
   {
