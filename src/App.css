@@ -22,7 +22,6 @@ body {
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
-  min-height: 100svh;
   display: grid;
   place-items: center;
   padding: clamp(2rem, 6vh, 4rem) 1rem;
