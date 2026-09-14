@@ -141,6 +141,7 @@ const projects: Project[] = [
     repoUrl: 'https://github.com/camatlala/chatreplay',
     tone: 'mono',
     height: 360,
+    image: '/chatreplay.jpeg',
   },
   {
     title: 'Calc-It',
@@ -151,6 +152,7 @@ const projects: Project[] = [
     repoUrl: 'https://github.com/camatlala/calc-it',
     tone: 'calc',
     height: 400,
+    image: '/calc-it.jpeg',
   },
   {
     title: 'Worth It',
@@ -160,6 +162,7 @@ const projects: Project[] = [
     liveUrl: 'https://worthit-decisions.netlify.app/',
     tone: 'worthit',
     height: 300,
+    image: '/worthit.jpeg',
   },
   {
     title: 'Patchwork',
@@ -170,6 +173,7 @@ const projects: Project[] = [
     repoUrl: 'https://github.com/camatlala/patchwork',
     tone: 'code',
     height: 380,
+    image: '/patchwork.jpeg',
   },
   {
     title: 'Page State',
@@ -180,6 +184,7 @@ const projects: Project[] = [
     repoUrl: 'https://github.com/camatlala/page-state',
     tone: 'cyan',
     height: 400,
+    image: '/page-state.jpeg',
   },
   {
     title: 'Context Bench',
@@ -190,6 +195,7 @@ const projects: Project[] = [
     repoUrl: 'https://github.com/camatlala/context-bench',
     tone: 'violet',
     height: 380,
+    image: '/context-bench.jpeg',
   },
   {
     title: 'Agent Bench',
@@ -200,6 +206,7 @@ const projects: Project[] = [
     repoUrl: 'https://github.com/camatlala/agent-bench',
     tone: 'peach',
     height: 360,
+    image: '/agent-bench.jpeg',
   },
   {
     title: 'Runbook',
@@ -210,6 +217,7 @@ const projects: Project[] = [
     repoUrl: 'https://github.com/camatlala/runbook',
     tone: 'warm',
     height: 380,
+    image: '/runbook.jpeg',
   },
 ]
 
