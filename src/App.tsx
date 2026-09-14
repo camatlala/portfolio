@@ -19,7 +19,10 @@ type Project = {
   liveUrl: string
   repoUrl?: string
   tone: 'warm' | 'code' | 'violet' | 'cyan' | 'peach'
-  size: 'wide' | 'tall' | 'feature' | 'standard'
+  /** Card height in px — tuned per project so masonry columns balance. */
+  height: number
+  /** Optional preview image (e.g. a screenshot); falls back to a tone gradient. */
+  image?: string
 }
 
 function usePrefersReducedMotion(): boolean {
@@ -51,10 +54,19 @@ function ProjectCard({
       data-tone={project.tone}
       style={{ '--card-index': index } as CSSProperties}
     >
-      <div className="project-preview" aria-hidden="true">
-        <span className="preview-orb" />
-        <span className="preview-line preview-line-long" />
-        <span className="preview-line" />
+      <div
+        className="project-preview"
+        aria-hidden="true"
+        style={project.image ? { backgroundImage: `url(${project.image})` } : undefined}
+        data-has-image={Boolean(project.image)}
+      >
+        {!project.image && (
+          <>
+            <span className="preview-orb" />
+            <span className="preview-line preview-line-long" />
+            <span className="preview-line" />
+          </>
+        )}
       </div>
 
       <div className="project-copy">
@@ -118,7 +130,7 @@ const projects: Project[] = [
     liveUrl: 'https://ster-stumpie.netlify.app/',
     repoUrl: 'https://github.com/camatlala/ster-stumpie',
     tone: 'warm',
-    size: 'feature',
+    height: 380,
   },
   {
     title: 'ChatReplay',
@@ -128,7 +140,7 @@ const projects: Project[] = [
     liveUrl: 'https://mychatreplay.netlify.app/',
     repoUrl: 'https://github.com/camatlala/chatreplay',
     tone: 'code',
-    size: 'tall',
+    height: 360,
   },
   {
     title: 'Orbit Notes',
@@ -137,7 +149,7 @@ const projects: Project[] = [
     liveUrl: 'https://antonio-matlala.dev/orbit-notes',
     repoUrl: 'https://github.com/AntonioMatlala/orbit-notes',
     tone: 'violet',
-    size: 'standard',
+    height: 280,
   },
   {
     title: 'Calc-It',
@@ -147,7 +159,7 @@ const projects: Project[] = [
     liveUrl: 'https://antonio-calc-it.netlify.app/',
     repoUrl: 'https://github.com/camatlala/calc-it',
     tone: 'cyan',
-    size: 'wide',
+    height: 400,
   },
   {
     title: 'Worth It',
@@ -156,7 +168,7 @@ const projects: Project[] = [
     stack: 'Azure DevOps',
     liveUrl: 'https://worthit-decisions.netlify.app/',
     tone: 'peach',
-    size: 'standard',
+    height: 300,
   },
   {
     title: 'Patchwork',
@@ -166,7 +178,7 @@ const projects: Project[] = [
     liveUrl: 'https://github.com/camatlala/patchwork',
     repoUrl: 'https://github.com/camatlala/patchwork',
     tone: 'code',
-    size: 'wide',
+    height: 380,
   },
   {
     title: 'Page State',
@@ -176,7 +188,7 @@ const projects: Project[] = [
     liveUrl: 'https://github.com/camatlala/page-state',
     repoUrl: 'https://github.com/camatlala/page-state',
     tone: 'cyan',
-    size: 'standard',
+    height: 400,
   },
   {
     title: 'Context Bench',
@@ -186,7 +198,7 @@ const projects: Project[] = [
     liveUrl: 'https://github.com/camatlala/context-bench',
     repoUrl: 'https://github.com/camatlala/context-bench',
     tone: 'violet',
-    size: 'standard',
+    height: 380,
   },
   {
     title: 'Agent Bench',
@@ -196,7 +208,7 @@ const projects: Project[] = [
     liveUrl: 'https://github.com/camatlala/agent-bench',
     repoUrl: 'https://github.com/camatlala/agent-bench',
     tone: 'peach',
-    size: 'tall',
+    height: 360,
   },
   {
     title: 'Runbook',
@@ -206,7 +218,7 @@ const projects: Project[] = [
     liveUrl: 'https://github.com/camatlala/runbook',
     repoUrl: 'https://github.com/camatlala/runbook',
     tone: 'warm',
-    size: 'wide',
+    height: 380,
   },
 ]
 
@@ -296,20 +308,13 @@ function HeroIntroSection() {
   )
 }
 
-const PROJECT_CARD_HEIGHT: Record<Project['size'], number> = {
-  feature: 460,
-  tall: 440,
-  wide: 300,
-  standard: 340,
-}
-
 function ProjectsSection() {
   const reducedMotion = usePrefersReducedMotion()
   const { ref, visible } = useScrollReveal<HTMLElement>(reducedMotion)
 
   const masonryItems: MasonryItem[] = projects.map((project, index) => ({
     id: project.title,
-    height: PROJECT_CARD_HEIGHT[project.size],
+    height: project.height,
     content: <ProjectCard project={project} index={index} />,
   }))
 
